@@ -3,10 +3,10 @@ package com.workintech.Library;
 public class Person {
 
     private String name;
-    private long id;
+    private int id;
 
 
-    public Person(String name, long id) {
+    public Person(String name, int id) {
         this.name = name;
         this.id = id;
     }
@@ -15,7 +15,7 @@ public class Person {
         return name;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 }

@@ -1,6 +1,7 @@
 package com.workintech.Library;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class Librarian extends Library {
@@ -9,63 +10,120 @@ public class Librarian extends Library {
     private String name;
     private Book book;
 
-    public Librarian(TreeMap<Integer, Reader> readers, TreeMap<Integer, Author> authors, TreeMap<Integer, Book> books) {
+    public Librarian(TreeMap<Integer, Reader> readers, HashSet<Book> authors, TreeMap<Integer, Book> books) {
         super(readers, authors, books);
-        this.name = "Dilara" ;
+        this.name = "Dilara";
     }
 
+    public Book getBook() {
+        return book;
+    }
 
     @Override
     public TreeMap<Integer, Book> addBooks(int id, Book book) {
         if (!getBooks().containsKey(id)) {
             getBooks().put(id, book);
         } else {
-            while (getBooks().containsKey(id)) {
-                id= id+1;
-                if (!getBooks().containsKey(id)) {
-                    getBooks().put(id, book);
-                }
-            }
+            int newId=getBooks().size()+1;
+            getBooks().put(newId, book);
         }
         return getBooks();
     }
 
     @Override
     public TreeMap<Integer, Book> deleteBooks(int id) {
-        getBooks().remove(id);
+        if(getBooks().containsKey(id)){
+            getBooks().remove(id);
+        }else{
+            System.out.println("Please enter the correct id.");
+        }
         return getBooks();
     }
 
     @Override
-    public Book chooseBook(int id) {
-        if(getBooks().containsKey(id)){
-            this.book=getBooks().get(id);
-            getBooks().remove(id);
+    public TreeMap<Integer, Book> updateTheBook(Book book1, Book book2) {
+        if (getBooks().containsValue(book1)) {
+            book1.setName(book2.getName());
+            book1.setPrice(book2.getPrice());
+        }
+        return getBooks();
+    }
+
+    @Override
+    public Book chooseBook(int id, Reader reader) {
+        if (getBooks().containsKey(id) && getBooks().get(id).getStatus() == Status.AVAILABLE) {
+            this.book = getBooks().get(id);
+            chooseBook(reader);
+
         }
         return book;
     }
-    public Book chooseBook(Reader reader) {
-        if(getBooks().containsKey(id)){
-            this.book=getBooks().get(id);
-            getBooks().remove(id);
 
+    public Book chooseBook(String name, Reader reader) {
+        for (Book value : getBooks().values()) {
+            if (value.getName().equals(name) && value.getStatus() == Status.AVAILABLE) {
+                this.book = value;
+                chooseBook(reader);
+
+            }
         }
         return book;
     }
 
-    @Override
-    public Book chooseBook(String name) {
-        return null;
+    public Book chooseOneOfWorksAuthors(String name, Reader reader) {
+        for (Book value : getBooks().values()) {
+            if (value.getAuthor().getName().equals(name) && value.getStatus() == Status.AVAILABLE) {
+                this.book = value;
+                chooseBook(reader);
+                break;
+            }
+        }
+        return book;
     }
 
-    @Override
-    public Book chooseBook(Author author) {
-        return null;
-    }
-
-    @Override
     public Book chooseBook(Reader reader) {
+        if (reader.getMyBooks().size() <= 5) {
+            reader.borrowbook(this.book.getId(), this.book);
+            reader.updateMyInvoiceFee(22.5);
+            this.book.updateStatus();
+        }
+        return this.book;
+    }
 
+    public TreeMap<Integer, Book> backTheBook(Reader reader, Book book) {
+        reader.giveBackBook(book);
+        for (Book value : getBooks().values()) {
+            if (value == book) {
+                value.updateStatus();
+            }
+        }
+        return getBooks();
+    }
+
+    @Override
+    public HashSet<Book> authorAndWorks(String name) {
+        getAuthors().clear();
+        for (Book value : getBooks().values()) {
+            if (value.getAuthor().getName().equals(name)) {
+                getAuthors().add(value);
+            }
+        }
+        return getAuthors();
+    }
+
+    @Override
+    public TreeMap<Integer, Reader> saveReaders(int id, Reader reader) {
+        if (!getReaders().containsKey(id)) {
+            getReaders().put(id, reader);
+        } else {
+            while (getReaders().containsKey(id)) {
+                id++;
+                if (!getReaders().containsKey(id)) {
+                    getReaders().put(id, reader);
+                }
+            }
+        }
+        return getReaders();
     }
 }
 

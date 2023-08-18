@@ -20,12 +20,37 @@ public class Book {
         this.id = id;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public int getId() {
         return id;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public Author getAuthor() {
+        return author;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void updateStatus() {
+        if (this.status == Status.AVAILABLE) {
+            this.status = Status.NOT_AVAILABLE;
+        } else {
+            this.status = Status.AVAILABLE;
+        }
+
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPrice(int price) {
@@ -43,14 +68,14 @@ public class Book {
     @Override
     public String toString() {
 
-        StringBuilder stringBuilder=new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("Book:"+name+"\n");
-        stringBuilder.append("Author:"+author.getName()+"\n");
-        stringBuilder.append("Id:"+id+"\n");
-        stringBuilder.append("Statu:"+status+"\n");
-        stringBuilder.append("Edition:"+edition+"\n");
-        stringBuilder.append("Price:"+price+"\n");
+        stringBuilder.append("Book:" + name + "\n");
+        stringBuilder.append("Author:" + author.getName() + "\n");
+        stringBuilder.append("Id:" + id + "\n");
+        stringBuilder.append("Statu:" + status + "\n");
+        stringBuilder.append("Edition:" + edition + "\n");
+        stringBuilder.append("Price:" + price + "\n"+"\n");
         return stringBuilder.toString();
     }
 

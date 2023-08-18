@@ -7,7 +7,7 @@ public class Author extends Person {
 
    private HashSet<Book> books;
 
-    public Author(String name, long id) {
+    public Author(String name, int id) {
         super(name, id);
         this.books = books;
     }
@@ -18,7 +18,8 @@ public class Author extends Person {
 
     @Override
     public String toString() {
-        return getName()+" Id: "+getId();
+        return getName();
     }
+
 
 }
