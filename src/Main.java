@@ -106,12 +106,15 @@ public class Main {
             try {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Please write what u wanna do.");
-                String text = scanner.nextLine().toUpperCase();
+                String text = scanner.nextLine().toUpperCase(Locale.ENGLISH);
                 if (text.contains("BORROW")) {
                     readerBorrowBook(librarian);
                 }
                 if (text.contains("GIVE")) {
                     giveBackTheBook(librarian);
+                }
+                if (text.contains("INVOICE")) {
+                    currentInvoice(librarian);
                 }
                 if (text.contains("BASE")) {
                     System.exit(0);                          //BURADA BREAK KULLANAMAYIZ ÇÜNKÜ BİR İŞLEM YAPILDIKTAN SONRA YAZILABİLİR.
@@ -165,6 +168,9 @@ public class Main {
             librarian.chooseOneOfWorksAuthors(name, librarian.getReaders().get(1));
                 break;
         }
+    }
+    public static void currentInvoice( Librarian librarian) {
+        System.out.println("Your total invoice: "+ librarian.getReaders().get(1).getMyInvoiceFee());
     }
 
     public static void printMyBooks(Librarian librarian) {

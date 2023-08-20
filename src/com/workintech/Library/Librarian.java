@@ -19,6 +19,10 @@ public class Librarian extends Library {
         return book;
     }
 
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     @Override
     public TreeMap<Integer, Book> addBooks(int id, Book book) {
         if (!getBooks().containsKey(id)) {
@@ -52,8 +56,8 @@ public class Librarian extends Library {
     @Override
     public Book chooseBook(int id, Reader reader) {
         if (getBooks().containsKey(id) && getBooks().get(id).getStatus() == Status.AVAILABLE) {
-            this.book = getBooks().get(id);
-            chooseBook(reader);
+            setBook(getBooks().get(id));
+            chooseBook(reader,getBooks().get(id));
 
         }
         return book;
@@ -62,8 +66,8 @@ public class Librarian extends Library {
     public Book chooseBook(String name, Reader reader) {
         for (Book value : getBooks().values()) {
             if (value.getName().equals(name) && value.getStatus() == Status.AVAILABLE) {
-                this.book = value;
-                chooseBook(reader);
+                setBook(value);
+                chooseBook(reader,value);
 
             }
         }
@@ -73,24 +77,25 @@ public class Librarian extends Library {
     public Book chooseOneOfWorksAuthors(String name, Reader reader) {
         for (Book value : getBooks().values()) {
             if (value.getAuthor().getName().equals(name) && value.getStatus() == Status.AVAILABLE) {
-                this.book = value;
-                chooseBook(reader);
+                setBook(value);
+                chooseBook(reader,value);
                 break;
             }
         }
         return book;
     }
 
-    public Book chooseBook(Reader reader) {
+    public Book chooseBook(Reader reader,Book book1) {
         if (reader.getMyBooks().size() <= 5) {
             reader.borrowbook(this.book.getId(), this.book);
             reader.updateMyInvoiceFee(22.5);
-            this.book.updateStatus();
+            book1.updateStatus();
         }
         return this.book;
     }
 
     public TreeMap<Integer, Book> backTheBook(Reader reader, Book book) {
+        reader.updateMyInvoiceFee(-22.5);
         reader.giveBackBook(book);
         for (Book value : getBooks().values()) {
             if (value == book) {
